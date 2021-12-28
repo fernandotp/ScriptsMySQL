@@ -2,6 +2,7 @@
 #!/bin/bash
 
 declare -A nombresBBDD
+dirBackups=/home/fernando/backupsmysql
 
 obtenerNombresBBDD(){
 
@@ -17,5 +18,29 @@ obtenerNombresBBDD(){
 mysql -e 'show databases;' > showBBDD.txt
 echo "" > nombresBBDD.txt
 ./listarBBDD showBBDD.txt
-obtenerNombresBBDD
-rm nombresBBDD.txt
+
+	obtenerNombresBBDD
+	if [ "$(ls $dirBackups)" ]
+	then
+		echo -e "\n--------------- Espacio file system backups ---------------"
+		fileSystemBackups=$(df -T $dirBackups)
+		echo "$fileSystemBackups"
+		
+		for i in ${nombresBBDD[@]}
+		do	
+			ultimoBackup=$(find $dirBackups -name "*$i*" -type f -mtime -9 | grep _$i_ | tail -1)
+
+			if [ "$ultimoBackup" ]
+			then
+				tamanoUltimoBck=$(du -sh $ultimoBackup)
+				echo -e "\nTamaño del ultimo backup de $i: $tamanoUltimoBck\n"
+			else
+				echo -e "\nNo existe ningun backup de $i\n"
+			fi
+		done
+	else	
+		echo -e "\nEl directorio de backups está vacio\n"
+
+	fi
+	FICHERO=$dirBackups$nombreBackup		
+	rm nombresBBDD.txt
