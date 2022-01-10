@@ -5,12 +5,9 @@
 #define LONG_MAX_NOMBRE 50
 
 int main(int argc, char **argv) {
-	int n;
-	char **palabras;
 	FILE *f, *fp;
 	char bbdd_actual[LONG_MAX_NOMBRE];
 	char bbdd_anterior[LONG_MAX_NOMBRE];
-	int i;
 	int cont = 0;
 
 	if (argc != 2) {
@@ -18,8 +15,6 @@ int main(int argc, char **argv) {
         	exit(EXIT_FAILURE);
 	}
 
-	n = argc - 2;
-	palabras = argv + 2;
 
 	f = fopen(argv[1], "r");
 	fp = fopen("nombresBBDD.txt", "wt");

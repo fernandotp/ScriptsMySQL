@@ -10,7 +10,6 @@ obtenerNombresBBDD(){
 	do
 		DATO1=${Datos_Consulta}
 		let j=j+1
-		echo $DATO1
 		nombresBBDD[$j]=$DATO1
 	done <nombresBBDD.txt
 }
@@ -28,7 +27,7 @@ echo "" > nombresBBDD.txt
 		
 		for i in ${nombresBBDD[@]}
 		do	
-			ultimoBackup=$(find $dirBackups -name "*$i*" -type f -mtime -9 | grep _$i_ | tail -1)
+			ultimoBackup=$(find $dirBackups -name "*$i*" -type f -mtime -32 | tail -1)
 
 			if [ "$ultimoBackup" ]
 			then
