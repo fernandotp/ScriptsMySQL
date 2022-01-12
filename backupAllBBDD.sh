@@ -3,15 +3,13 @@
 # Este script realiza una copia de seguridad de cada una de las bases de datos existentes en MySQL
 
 TODAY=`date '+%Y_%m_%d__%H_%M_%S'`;
-DIRBACKUPS=/home/fernando/backupsmysql
+DIRBACKUPS=/root/backups/mysql
 
 #Informacion de logueo
 USER="root"		# Nombre de usuario
 PASS=' '		# Contrasena
-#HOST="127.0.0.1"	# Host
 HOST="localhost"	# Host
 
-# guess binary names
 MYSQL="$(which mysql)"
 MYSQLDUMP="$(which mysqldump)"
 GZIP="$(which gzip)"
