@@ -9,6 +9,7 @@ then
 
 		#------------REALIZAR BACKUP--------------
 
+	[ ! -d "${DIRBACKUPS}" ] && mkdir -p "${DIRBACKUPS}"
 	ultimoBackup=$(find $DIRBACKUPS -name "*_$2_*" -type f -mtime -9 | tail -1)
 	tamanoUltimoBck=$(du -sh $ultimoBackup)
 	mysqldump --user=$1 --password="" --host=localhost $2 > $DIRBACKUPS/$nombreBackup
