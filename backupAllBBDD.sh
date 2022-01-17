@@ -18,6 +18,7 @@ GZIP="$(which gzip)"
 
 # Obtener los nombres de todas las bases de datos
 BBDDS="$($MYSQL -u $USER -h $HOST -p $PASS -Bse 'show databases')"
+echo -e "\nRealizando backups de MySQL..."
 for bbdd in $BBDDS
 do
 	echo $bbdd
