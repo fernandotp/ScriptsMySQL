@@ -3,30 +3,26 @@
 declare -A nombresBBDD
 DIRBACKUPS=/root/backups/mysql
 
-obtenerNombresBBDD(){
+#Informacion de logueo
+USER="root"		# Nombre de usuario
+PASS=' '	# Contrasena
+HOST="localhost"	# Host
 
-	while read -a Datos_Consulta;
-	do
-		DATO1=${Datos_Consulta}
-		let j=j+1
-		nombresBBDD[$j]=$DATO1
-	done <nombresBBDD.txt
-}
+MYSQL="$(which mysql)"
 
-mysql -e 'show databases;' > showBBDD.txt
-echo "" > nombresBBDD.txt
-./listarBBDD showBBDD.txt
-
-	obtenerNombresBBDD
 	[ ! -d "${DIRBACKUPS}" ] && mkdir -p "${DIRBACKUPS}"
 	if [ "$(ls $DIRBACKUPS)" ]
 	then
+		BBDDS="$($MYSQL -u $USER -h $HOST -p $PASS -Bse 'show databases')"
+
 		echo -e "\n--------------- Espacio file system backups ---------------"
 		fileSystemBackups=$(df -T $DIRBACKUPS)
 		echo "$fileSystemBackups"
 		
-		for i in ${nombresBBDD[@]}
-		do	
+		for i in $BBDDS
+		do
+		if [[ ("$i" != "information_schema") && ("$i" != "datname")]];
+		then	
 			ultimoBackup=$(find $DIRBACKUPS -name "*$i*" -type f -mtime -32 | tail -1)
 
 			if [ "$ultimoBackup" ]
@@ -36,9 +32,9 @@ echo "" > nombresBBDD.txt
 			else
 				echo -e "\nNo existe ningun backup de $i\n"
 			fi
+		fi
 		done
 	else	
 		echo -e "\nEl directorio de backups está vacio\n"
 
 	fi
-	rm nombresBBDD.txt

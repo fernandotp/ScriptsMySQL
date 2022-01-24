@@ -4,7 +4,7 @@ DIRBACKUPS=/root/backups/mysql
 if [[ (-n "$1") && (-n "$2") ]];
 then
 	echo -e "\nRealizando backup de $2..."
-	today=`date '+%Y_%m_%d__%H_%M_%S'`;
+	today=`date '+%Y-%m-%d_%H:%M:%S'`;
 	nombreBackup="backup_$2_$today.sql"
 
 		#------------REALIZAR BACKUP--------------
@@ -12,7 +12,7 @@ then
 	[ ! -d "${DIRBACKUPS}" ] && mkdir -p "${DIRBACKUPS}"
 	ultimoBackup=$(find $DIRBACKUPS -name "*_$2_*" -type f -mtime -9 | tail -1)
 	tamanoUltimoBck=$(du -sh $ultimoBackup)
-	mysqldump --user=$1 --password="" --host=localhost $2 > $DIRBACKUPS/$nombreBackup
+	mysqldump --user=$1 --password="3v3radm1n" --host=localhost $2 > $DIRBACKUPS/$nombreBackup
 	tamanoNuevoBck=$(du -sh  $DIRBACKUPS/$nombreBackup)
 	bckVacio=${tamanoNuevoBck:0:1}
 
